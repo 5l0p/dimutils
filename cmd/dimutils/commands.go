@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/og-dim9/dimutils/pkg/apigen"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
@@ -151,6 +152,19 @@ var togchatCmd = &cobra.Command{
 	},
 }
 
+// apigenCmd represents the apigen command
+var apigenCmd = &cobra.Command{
+	Use:   "apigen",
+	Short: "API generator for read-only data APIs",
+	Long:  `Generate REST APIs, HTML pages, and blob storage from data sources.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := apigen.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	cobra.CheckErr(fmt.Errorf("%s tool not yet integrated into multicall binary. Please use individual binary from src/%s/ or run 'make %s' to build it", toolName, toolName, toolName))
@@ -159,6 +173,7 @@ func runIndividualTool(toolName string, args []string) {
 func init() {
 	// Add all tool commands to root
 	rootCmd.AddCommand(
+		apigenCmd,
 		gitaskopCmd,
 		eventdiffCmd,
 		unexpectCmd,
