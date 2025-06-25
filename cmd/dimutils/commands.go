@@ -16,6 +16,7 @@ import (
 	"github.com/og-dim9/dimutils/pkg/mkgchat"
 	"github.com/og-dim9/dimutils/pkg/regex2json"
 	"github.com/og-dim9/dimutils/pkg/serve"
+	"github.com/og-dim9/dimutils/pkg/shell"
 	"github.com/og-dim9/dimutils/pkg/tandum"
 	"github.com/og-dim9/dimutils/pkg/togchat"
 	"github.com/og-dim9/dimutils/pkg/unexpect"
@@ -284,8 +285,23 @@ var makeCmd = &cobra.Command{
 	},
 }
 
+// goshCmd represents the shell command
+var goshCmd = &cobra.Command{
+	Use:                "shell",
+	Short:              "Shell interpreter",
+	Long:               `An interactive shell interpreter with POSIX shell features.`,
+	DisableFlagParsing: true,
+	Run: func(cobraCmd *cobra.Command, args []string) {
+		if err := shell.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
+	//fixme: we should fallback to the tools downloader if we need to
 	cobra.CheckErr(fmt.Errorf("%s tool not yet integrated into multicall binary. Please use individual binary from src/%s/ or run 'make %s' to build it", toolName, toolName, toolName))
 }
 
@@ -307,5 +323,6 @@ func init() {
 		kubectlCmd,
 		databricksCmd,
 		makeCmd,
+		goshCmd,
 	)
 }
