@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/itchyny/gojq/cli"
+	"github.com/mikefarah/yq/v4/cmd"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
@@ -174,6 +175,30 @@ var jqCmd = &cobra.Command{
 	},
 }
 
+// yqCmd represents the yq command
+var yqCmd = &cobra.Command{
+	Use:                "yq",
+	Short:              "YAML processor",
+	Long:               `Command-line YAML processor for querying and manipulating YAML data.`,
+	DisableFlagParsing: true,
+	Run: func(cobraCmd *cobra.Command, args []string) {
+		// Set up args for yq
+		oldArgs := os.Args
+		os.Args = append([]string{"yq"}, args...)
+		defer func() {
+			os.Args = oldArgs
+		}()
+
+		// Create and execute yq command
+		yqCmd := cmd.New()
+		yqCmd.SetArgs(args)
+		if err := yqCmd.Execute(); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	cobra.CheckErr(fmt.Errorf("%s tool not yet integrated into multicall binary. Please use individual binary from src/%s/ or run 'make %s' to build it", toolName, toolName, toolName))
@@ -193,5 +218,6 @@ func init() {
 		mkgchatCmd,
 		togchatCmd,
 		jqCmd,
+		yqCmd,
 	)
 }
