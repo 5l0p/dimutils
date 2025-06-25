@@ -6,6 +6,7 @@ import (
 
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
+	"github.com/og-dim9/dimutils/pkg/embed"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
 	"github.com/og-dim9/dimutils/pkg/gitaskop"
 	"github.com/og-dim9/dimutils/pkg/mkgchat"
@@ -151,6 +152,20 @@ var togchatCmd = &cobra.Command{
 	},
 }
 
+// embedCmd represents the embed command
+var embedCmd = &cobra.Command{
+	Use:                "embed",
+	Short:              "Embedded applications and tools manager",
+	Long:               `Manage and run embedded applications and command-line tools with enhanced functionality.`,
+	DisableFlagParsing: true,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := embed.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	cobra.CheckErr(fmt.Errorf("%s tool not yet integrated into multicall binary. Please use individual binary from src/%s/ or run 'make %s' to build it", toolName, toolName, toolName))
@@ -169,5 +184,6 @@ func init() {
 		tandumCmd,
 		mkgchatCmd,
 		togchatCmd,
+		embedCmd,
 	)
 }
