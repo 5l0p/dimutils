@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"os"
 
+	makecmd "github.com/5l0p/go-make/pkg/cmd"
 	"github.com/databricks/cli/cmd/root"
 	"github.com/itchyny/gojq/cli"
-	"github.com/mikefarah/yq/v4/cmd"
+	yqcmd "github.com/mikefarah/yq/v4/cmd"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
@@ -193,9 +194,9 @@ var yqCmd = &cobra.Command{
 		}()
 
 		// Create and execute yq command
-		yqCmd := cmd.New()
-		yqCmd.SetArgs(args)
-		if err := yqCmd.Execute(); err != nil {
+		yqCommand := yqcmd.New()
+		yqCommand.SetArgs(args)
+		if err := yqCommand.Execute(); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -251,6 +252,38 @@ var databricksCmd = &cobra.Command{
 	},
 }
 
+// makeCmd represents the make command
+var makeCmd = &cobra.Command{
+	Use:                "make",
+	Short:              "Go-based make implementation",
+	Long:               `A Go implementation of the make utility for building projects.`,
+	DisableFlagParsing: true,
+	Run: func(cobraCmd *cobra.Command, args []string) {
+		// Create go-make command with Makefile
+		makeCommand, err := makecmd.New("Makefile")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error creating make command: %v\n", err)
+			os.Exit(1)
+		}
+
+		// If no target specified, build default target
+		if len(args) == 0 {
+			if err := makeCommand.BuildDefault(); err != nil {
+				fmt.Fprintf(os.Stderr, "Error building default target: %v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			// Build specified targets
+			for _, target := range args {
+				if err := makeCommand.Build(target); err != nil {
+					fmt.Fprintf(os.Stderr, "Error building target '%s': %v\n", target, err)
+					os.Exit(1)
+				}
+			}
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	cobra.CheckErr(fmt.Errorf("%s tool not yet integrated into multicall binary. Please use individual binary from src/%s/ or run 'make %s' to build it", toolName, toolName, toolName))
@@ -273,5 +306,6 @@ func init() {
 		yqCmd,
 		kubectlCmd,
 		databricksCmd,
+		makeCmd,
 	)
 }
