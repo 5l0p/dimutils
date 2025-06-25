@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/itchyny/gojq/cli"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
@@ -151,6 +152,28 @@ var togchatCmd = &cobra.Command{
 	},
 }
 
+// jqCmd represents the jq command
+var jqCmd = &cobra.Command{
+	Use:                "jq",
+	Short:              "JSON processor",
+	Long:               `Command-line JSON processor using gojq implementation.`,
+	DisableFlagParsing: true,
+	Run: func(cmd *cobra.Command, args []string) {
+		// Set up args for gojq CLI
+		oldArgs := os.Args
+		os.Args = append([]string{"gojq"}, args...)
+		defer func() {
+			os.Args = oldArgs
+		}()
+
+		// Run gojq CLI
+		exitCode := cli.Run()
+		if exitCode != 0 {
+			os.Exit(exitCode)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	cobra.CheckErr(fmt.Errorf("%s tool not yet integrated into multicall binary. Please use individual binary from src/%s/ or run 'make %s' to build it", toolName, toolName, toolName))
@@ -169,5 +192,6 @@ func init() {
 		tandumCmd,
 		mkgchatCmd,
 		togchatCmd,
+		jqCmd,
 	)
 }
