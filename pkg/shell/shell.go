@@ -19,7 +19,10 @@ const (
 // Run executes the shell command with the provided arguments
 func Run(args []string) error {
 	parser := syntax.NewParser()
-	runner, err := interp.New(interp.StdIO(os.Stdin, os.Stdout, os.Stderr))
+	runner, err := interp.New(
+		interp.StdIO(os.Stdin, os.Stdout, os.Stderr),
+		interp.ExecHandler(createExecHandler()),
+	)
 	if err != nil {
 		return fmt.Errorf("error creating shell interpreter: %v", err)
 	}
