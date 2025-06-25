@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.2
 
 require (
-	github.com/5l0p/go-make v0.0.0-20250625115623-a1d21a6bba08
+	github.com/5l0p/go-make v0.0.0-20250625122242-6e01c184a873
 	github.com/databricks/cli v0.256.0
 	github.com/go-cmd/cmd v1.4.3
 	github.com/google/uuid v1.6.0
@@ -13,6 +13,7 @@ require (
 	github.com/mikefarah/yq/v4 v4.45.4
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/cobra v1.9.1
+	golang.org/x/term v0.32.0
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/kubectl v0.33.2
 	mvdan.cc/sh/v3 v3.11.0
@@ -119,7 +120,6 @@ require (
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.15.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/term v0.32.0 // indirect
 	golang.org/x/text v0.26.0 // indirect
 	golang.org/x/time v0.12.0 // indirect
 	google.golang.org/api v0.238.0 // indirect

@@ -6,8 +6,8 @@ cloud.google.com/go/compute/metadata v0.7.0 h1:PBWF+iiAerVNe8UCHxdOt6eHLVc3ydFeO
 cloud.google.com/go/compute/metadata v0.7.0/go.mod h1:j5MvL9PprKL39t166CoB1uVHfQMs4tFQZZcKwksXUjo=
 dario.cat/mergo v1.0.2 h1:85+piFYR1tMbRrLcDwR18y4UKJ3aH1Tbzi24VRW1TK8=
 dario.cat/mergo v1.0.2/go.mod h1:E/hbnu0NxMFBjpMIE34DRGLWqDy0g5FuKDhCb31ngxA=
-github.com/5l0p/go-make v0.0.0-20250625115623-a1d21a6bba08 h1:p0nktQT/1ESayZaH8xMaDEZDwNsIMELTUXgelBkb/Cs=
-github.com/5l0p/go-make v0.0.0-20250625115623-a1d21a6bba08/go.mod h1:PKh5wM0lUpV0KiwAtsNXoiPuoYoGwfcd64tHKetrMSg=
+github.com/5l0p/go-make v0.0.0-20250625122242-6e01c184a873 h1:seyfP0ThRpl5aWcsgVkb2Fv8blxx43Ke6LQUWqw+eH0=
+github.com/5l0p/go-make v0.0.0-20250625122242-6e01c184a873/go.mod h1:PKh5wM0lUpV0KiwAtsNXoiPuoYoGwfcd64tHKetrMSg=
 github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c h1:udKWzYgxTojEKWjV8V+WSxDXJ4NFATAsZjh8iIbsQIg=
 github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c/go.mod h1:xomTg63KZ2rFqZQzSB4Vz2SUXa1BpHTVz9L5PTmPC4E=
 github.com/MakeNowJust/heredoc v1.0.0 h1:cXCdzVdstXyiTqTvfqk9SDHpKNjxuom+DOlyEeQ4pzQ=
