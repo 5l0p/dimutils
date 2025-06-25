@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
+	"github.com/databricks/cli/cmd/root"
 	"github.com/itchyny/gojq/cli"
 	"github.com/mikefarah/yq/v4/cmd"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
@@ -17,6 +19,7 @@ import (
 	"github.com/og-dim9/dimutils/pkg/togchat"
 	"github.com/og-dim9/dimutils/pkg/unexpect"
 	"github.com/spf13/cobra"
+	kubectlcmd "k8s.io/kubectl/pkg/cmd"
 )
 
 // gitaskopCmd represents the gitaskop command
@@ -199,6 +202,55 @@ var yqCmd = &cobra.Command{
 	},
 }
 
+// kubectlCmd represents the kubectl command
+var kubectlCmd = &cobra.Command{
+	Use:                "kubectl",
+	Short:              "Kubernetes CLI",
+	Long:               `Command-line tool for controlling Kubernetes clusters.`,
+	DisableFlagParsing: true,
+	Run: func(cobraCmd *cobra.Command, args []string) {
+		// Set up args for kubectl
+		oldArgs := os.Args
+		os.Args = append([]string{"kubectl"}, args...)
+		defer func() {
+			os.Args = oldArgs
+		}()
+
+		// Create kubectl command with factory
+		kubectlCmd := kubectlcmd.NewDefaultKubectlCommand()
+		kubectlCmd.SetArgs(args)
+		if err := kubectlCmd.Execute(); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
+// databricksCmd represents the databricks command
+var databricksCmd = &cobra.Command{
+	Use:                "databricks",
+	Short:              "Databricks CLI",
+	Long:               `Command-line interface for Databricks.`,
+	DisableFlagParsing: true,
+	Run: func(cobraCmd *cobra.Command, args []string) {
+		// Set up args for databricks CLI
+		oldArgs := os.Args
+		os.Args = append([]string{"databricks"}, args...)
+		defer func() {
+			os.Args = oldArgs
+		}()
+
+		// Create and execute databricks command
+		ctx := context.Background()
+		databricksCmd := root.New(ctx)
+		databricksCmd.SetArgs(args)
+		if err := databricksCmd.Execute(); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	cobra.CheckErr(fmt.Errorf("%s tool not yet integrated into multicall binary. Please use individual binary from src/%s/ or run 'make %s' to build it", toolName, toolName, toolName))
@@ -219,5 +271,7 @@ func init() {
 		togchatCmd,
 		jqCmd,
 		yqCmd,
+		kubectlCmd,
+		databricksCmd,
 	)
 }
