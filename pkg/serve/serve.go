@@ -44,7 +44,17 @@ func Run(args []string) error {
 			if i+1 < len(args) {
 				config.Dir = args[i+1]
 			}
+		case "--help", "-h":
+			fmt.Println("Usage: serve [options]")
+			fmt.Println("Options:")
+			fmt.Println("  --slow       Simulate a slow server response")
+			fmt.Println("  --port, -p  Specify the port to listen on (default: 4321)")
+			fmt.Println("  --dir, -d   Specify the directory to serve (default: current directory)")
+			fmt.Println("  --help, -h  Show this help message")
+			return nil
+
 		}
+
 	}
 
 	return startServer(config)
