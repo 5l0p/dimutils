@@ -12,6 +12,7 @@ import (
 	yqcmd "github.com/mikefarah/yq/v4/cmd"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
 	"github.com/og-dim9/dimutils/pkg/config"
+	"github.com/og-dim9/dimutils/pkg/datagen"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
 	"github.com/og-dim9/dimutils/pkg/gitaskop"
@@ -328,6 +329,19 @@ var configCmd = &cobra.Command{
 	},
 }
 
+// datagenCmd represents the datagen command
+var datagenCmd = &cobra.Command{
+	Use:   "datagen",
+	Short: "Test data generation utility",
+	Long:  `Generate realistic test data and shadow traffic for load testing.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := datagen.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	//fixme: we should fallback to the tools downloader if we need to
@@ -338,6 +352,7 @@ func init() {
 	// Add all tool commands to root
 	rootCmd.AddCommand(
 		apigenCmd,
+		datagenCmd,
 		gitaskopCmd,
 		eventdiffCmd,
 		unexpectCmd,
