@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/og-dim9/dimutils/pkg/apigen"
 	makecmd "github.com/5l0p/go-make/pkg/cmd"
 	"github.com/databricks/cli/cmd/root"
 	"github.com/itchyny/gojq/cli"
@@ -158,6 +159,7 @@ var togchatCmd = &cobra.Command{
 	},
 }
 
+<<<<<<< HEAD
 // jqCmd represents the jq command
 var jqCmd = &cobra.Command{
 	Use:                "jq",
@@ -299,6 +301,19 @@ var goshCmd = &cobra.Command{
 	},
 }
 
+// apigenCmd represents the apigen command
+var apigenCmd = &cobra.Command{
+	Use:   "apigen",
+	Short: "API generator for read-only data APIs",
+	Long:  `Generate REST APIs, HTML pages, and blob storage from data sources.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := apigen.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	//fixme: we should fallback to the tools downloader if we need to
@@ -308,6 +323,7 @@ func runIndividualTool(toolName string, args []string) {
 func init() {
 	// Add all tool commands to root
 	rootCmd.AddCommand(
+		apigenCmd,
 		gitaskopCmd,
 		eventdiffCmd,
 		unexpectCmd,
