@@ -14,6 +14,7 @@ import (
 	"github.com/og-dim9/dimutils/pkg/config"
 	"github.com/og-dim9/dimutils/pkg/datagen"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
+	"github.com/og-dim9/dimutils/pkg/embed"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
 	"github.com/og-dim9/dimutils/pkg/gitaskop"
 	"github.com/og-dim9/dimutils/pkg/mkgchat"
@@ -342,6 +343,20 @@ var datagenCmd = &cobra.Command{
 	},
 }
 
+// embedCmd represents the embed command
+var embedCmd = &cobra.Command{
+	Use:                "embed",
+	Short:              "Embedded applications and tools manager",
+	Long:               `Manage and run embedded applications and command-line tools with enhanced functionality.`,
+	DisableFlagParsing: true,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := embed.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	//fixme: we should fallback to the tools downloader if we need to
@@ -370,5 +385,6 @@ func init() {
 		makeCmd,
 		goshCmd,
 		configCmd,
+		embedCmd,
 	)
 }
