@@ -11,6 +11,7 @@ import (
 	"github.com/itchyny/gojq/cli"
 	yqcmd "github.com/mikefarah/yq/v4/cmd"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
+	"github.com/og-dim9/dimutils/pkg/config"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
 	"github.com/og-dim9/dimutils/pkg/gitaskop"
@@ -159,7 +160,6 @@ var togchatCmd = &cobra.Command{
 	},
 }
 
-<<<<<<< HEAD
 // jqCmd represents the jq command
 var jqCmd = &cobra.Command{
 	Use:                "jq",
@@ -314,6 +314,20 @@ var apigenCmd = &cobra.Command{
 	},
 }
 
+// configCmd represents the config command
+var configCmd = &cobra.Command{
+	Use:                "config",
+	Short:              "Interactive configuration management",
+	Long:               `Create and manage configuration files, run command chains, and generate manifests.`,
+	DisableFlagParsing: true,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := config.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	//fixme: we should fallback to the tools downloader if we need to
@@ -340,5 +354,6 @@ func init() {
 		databricksCmd,
 		makeCmd,
 		goshCmd,
+		configCmd,
 	)
 }
