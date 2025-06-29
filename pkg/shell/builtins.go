@@ -9,10 +9,15 @@ import (
 	"github.com/databricks/cli/cmd/root"
 	"github.com/itchyny/gojq/cli"
 	yqcmd "github.com/mikefarah/yq/v4/cmd"
+	"github.com/og-dim9/dimutils/pkg/apigen"
 	"github.com/og-dim9/dimutils/pkg/cbxxml2regex"
+	"github.com/og-dim9/dimutils/pkg/config"
+	"github.com/og-dim9/dimutils/pkg/datagen"
 	"github.com/og-dim9/dimutils/pkg/ebcdic"
+	"github.com/og-dim9/dimutils/pkg/embed"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
 	"github.com/og-dim9/dimutils/pkg/gitaskop"
+	"github.com/og-dim9/dimutils/pkg/kafka"
 	"github.com/og-dim9/dimutils/pkg/mkgchat"
 	"github.com/og-dim9/dimutils/pkg/regex2json"
 	"github.com/og-dim9/dimutils/pkg/serve"
@@ -28,6 +33,7 @@ type BuiltinFunc func(ctx context.Context, args []string) error
 
 // builtins maps command names to their implementations
 var builtins = map[string]BuiltinFunc{
+	"apigen":       runApigen,
 	"gitaskop":     runGitaskop,
 	"eventdiff":    runEventdiff,
 	"unexpect":     runUnexpect,
@@ -43,6 +49,10 @@ var builtins = map[string]BuiltinFunc{
 	"kubectl":      runKubectl,
 	"databricks":   runDatabricks,
 	"make":         runMake,
+	"config":       runConfig,
+	"datagen":      runDatagen,
+	"embed":        runEmbed,
+	"kafka":        runKafka,
 }
 
 // createExecHandler creates an exec handler that includes our builtins
@@ -184,4 +194,24 @@ func runMake(ctx context.Context, args []string) error {
 		}
 	}
 	return nil
+}
+
+func runApigen(ctx context.Context, args []string) error {
+	return apigen.Run(args)
+}
+
+func runConfig(ctx context.Context, args []string) error {
+	return config.Run(args)
+}
+
+func runDatagen(ctx context.Context, args []string) error {
+	return datagen.Run(args)
+}
+
+func runEmbed(ctx context.Context, args []string) error {
+	return embed.Run(args)
+}
+
+func runKafka(ctx context.Context, args []string) error {
+	return kafka.Run(args)
 }
