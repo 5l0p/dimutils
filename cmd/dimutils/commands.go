@@ -17,6 +17,7 @@ import (
 	"github.com/og-dim9/dimutils/pkg/embed"
 	"github.com/og-dim9/dimutils/pkg/eventdiff"
 	"github.com/og-dim9/dimutils/pkg/gitaskop"
+	"github.com/og-dim9/dimutils/pkg/kafka"
 	"github.com/og-dim9/dimutils/pkg/mkgchat"
 	"github.com/og-dim9/dimutils/pkg/regex2json"
 	"github.com/og-dim9/dimutils/pkg/serve"
@@ -357,6 +358,20 @@ var embedCmd = &cobra.Command{
 	},
 }
 
+// kafkaCmd represents the kafka command
+var kafkaCmd = &cobra.Command{
+	Use:                "kafka",
+	Short:              "Kafka utilities for consume, produce, and admin operations",
+	Long:               `Unified Kafka interface for consuming messages, producing messages, and administering topics and consumer groups.`,
+	DisableFlagParsing: true,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := kafka.Run(args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	},
+}
+
 // runIndividualTool shows a placeholder message for now
 func runIndividualTool(toolName string, args []string) {
 	//fixme: we should fallback to the tools downloader if we need to
@@ -386,5 +401,6 @@ func init() {
 		goshCmd,
 		configCmd,
 		embedCmd,
+		kafkaCmd,
 	)
 }
